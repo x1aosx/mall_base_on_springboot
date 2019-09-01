@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+
+	<title>登录页面</title>
+
+	<link rel="stylesheet" type="text/css" href="/static/css/login/base.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login/home.css">
+	
+</head>
+<body>
+
+	<header class="aui-header">
+		<div class="aui-header-box">
+			<h1>
+				<a href="login.html" class="aui-header-box-logo">饰品商城</a>
+			</h1>
+		</div>
+	</header>
+
+	<section class="aui-content">
+		<div class="aui-content-box clearfix">
+			<div class="aui-content-box-fl">
+				<div class="aui-form-header">
+					<div class="aui-form-header-item on">密码登录</div>
+					<div class="aui-form-header-item">验证码登录</div>
+					<span class="aui-form-header-san"></span>
+				</div>
+				<div class="aui-form-content">
+					<div class="aui-form-content-item">
+						<form action="" method="post" class="login">
+							<div class="aui-form-list">
+								<input type="text" class="aui-input" name="username"  required placeholder="请输入用户名"  data-required="required" autocomplete="off" >
+							</div>
+							<div class="aui-form-list">
+								<input type="password" class="aui-input" name="password" required placeholder="请输入密码" data-required="required" autocomplete="off">
+							</div>
+							<div class="aui-form-pwd clearfix">
+<!--								<a href="#">忘记密码？</a>-->
+							</div>
+							<div class="aui-form-btn">
+								<input type="button" class="aui-btn" value="登&nbsp;录" id="common_login">
+							</div>
+						</form>
+					</div>
+					<div class="aui-form-content-item">
+						<form action="" class="login">
+							<div class="aui-form-list">
+								<input type="email" class="aui-input" name="email" placeholder="请输入邮箱" required data-required="required" autocomplete="off">
+							</div>
+							<div class="aui-form-list">
+								<input type="text" class="aui-input" name="code" placeholder="请输入验证码" required data-required="required" autocomplete="off">
+								<input type="button" class="aui-child" value="获取验证码" id="code" name="get-code">
+							</div>
+							<div class="aui-form-pwd clearfix">
+<!--								<a href="#">忘记密码？</a>-->
+							</div>
+							<div class="aui-form-btn">
+								<input type="button" class="aui-btn" value="登&nbsp;录" id="email_login">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="aui-content-box-fr">
+				<div class="aui-content-box-text">
+					<h3>还没有帐号:</h3>
+					<a th:href="@{/register}" class="aui-ll-link">立即注册</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript">
+		// $(".login").keydown(function(e){
+		// 	if(e.keyCode==13){
+		// 		$(".aui-btn").click();
+		// 	}
+		// });
+		//正则表达式匹配参数
+		function getParam(name) {
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+
+        $(function(){
+
+			/*tab标签切换*/
+            function tabs(tabTit,on,tabCon){
+                $(tabCon).each(function(){
+                    $(this).children().eq(0).show();
+
+                });
+                $(tabTit).each(function(){
+                    $(this).children().eq(0).addClass(on);
+                });
+                $(tabTit).children().click(function(){
+                    $(this).addClass(on).siblings().removeClass(on);
+                    var index = $(tabTit).children().index(this);
+                    $(tabCon).children().eq(index).show().siblings().hide();
+                });
+            }
+            tabs(".aui-form-header","on",".aui-form-content");
+
+        })
+		/*账号密码登录*/
+		$("#common_login").on("click",function () {
+			var params={};
+			var username = $('input[name="username"]').val();
+			var password = $('input[name="password"]').val();
+			params.username= username;
+			params.password= password;
+			if (username!=""&&password!=""){
+				$.ajax({
+					url: "/login",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success:function (result) {
+						if (result.state == 1) {
+							var goodsId = getParam("goodsId");
+							if (goodsId>0){
+								return  window.location.href = "/showGoodsToUser?id=" + goodsId;
+							}
+							window.location.href=result.redirectUrl;
+						}else {
+							window.alert(result.msg);
+						}
+
+					},
+					error:function (result) {
+						console.log(result);
+						console.log("error");
+					}
+				});
+			}else {
+				alert("请检查信息");
+			}
+
+		});
+		/*发送邮件*/
+		$("#code").on("click",function () {
+			var params={};
+			var email = $('input[name="email"]').val();
+			params.email= email;
+			var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+			if (reg.test(email)) {
+				$.ajax({
+					url: "/sendEmail",
+					data: params,
+					dataType: "json",
+					type: "post",
+					success: function (result) {
+						if (result.state==1){
+							console.log(result)
+							$('input[name="code"]').attr("placeholder", result.data);
+							timer(30, $('input[name="get-code"]'));
+						}else {
+							alert(result.msg);
+						}
+					},
+					error: function () {
+						console.log("error");
+					}
+				});
+			}else {
+				alert("邮箱格式不正确");
+			}
+		});
+		/*邮件登录*/
+		$("#email_login").on("click",function () {
+			var params={};
+			var email = $('input[name="email"]').val();
+			var code = $('input[name="code"]').val();
+			params.email= email;
+			params.code= code;
+			console.log(params);
+			var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+			if (email!=""&&code!=""	&&reg.test(email)){
+				$.ajax({
+					url: "/emailLogin",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success:function (result) {
+						if (result.state==1){
+							var goodsId = getParam("goodsId");
+							if (goodsId>0){
+								return  window.location.href = "/showGoodsToUser?id=" + goodsId;
+							}
+							window.location.href=result.redirectUrl;
+						}else {
+							alert(result.msg);
+						}
+
+					},
+					error:function (result) {
+						$("#email_login #code").val(result.msg);
+						console.log("error");
+					}
+				});
+			}else {
+				alert("请确认信是否正确");
+			}
+		});
+		/*禁用登录30s*/
+		function timer(time,bt) {
+			var btn = $(bt);
+			console.log(btn);
+			btn.attr("disabled", true);  //按钮禁止点击
+			btn.val(time <= 0 ? "发送动态密码" : ("" + (time) + "秒后可发送"));
+			var hander = setInterval(function() {
+				if (time <= 0) {
+					clearInterval(hander); //清除倒计时
+					btn.val("发送动态密码");
+					btn.attr("disabled", false);
+					return false;
+				}else {
+					btn.val("" + (time--) + "秒后可发送");
+				}
+			}, 1000);
+		}
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh"  xmlns:th="http://www.thymeleaf.org">
+<head >
+	<meta charset="UTF-8">
+
+	<title>登录页面</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/login/base.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login/home.css">
+</head>
+<body>
+
+	<header class="aui-header">
+		<div class="aui-header-box">
+			<h1>
+				<a href="login.html" class="aui-header-box-logo"></a>
+			</h1>
+		</div>
+	</header>
+
+	<section class="aui-content">
+		<div class="aui-content-box clezhuaarfix">
+			<div class="aui-content-box-fl">
+				<h2>注册购买饰品</h2>
+
+				<div class="aui-form-content">
+
+					<div class="aui-form-content-item" style="display:block">
+						<form action="">
+							<div class="aui-form-list">
+								<input type="text" class="aui-input" name="username" placeholder="请输入用户名" required data-required="required" autocomplete="off">
+							</div>
+							<div class="aui-form-list">
+								<input type="password" class="aui-input" name="password" placeholder="请输入密码" required data-required="required" autocomplete="off">
+							</div>
+							<div class="aui-form-list">
+								<input type="email" class="aui-input" name="email" placeholder="请输入邮箱" required data-required="required" autocomplete="off">
+							</div>
+							<div class="aui-form-list">
+								<input type="text" class="aui-input" name="code" placeholder="请输入验证码" required data-required="required" autocomplete="off">
+								<input type="button" class="aui-child" value="获取验证码" id="get_code" name="get_code">
+							</div>
+							<div class="aui-form-btn">
+								<input type="button" class="aui-btn" value="注&nbsp;册" id="register">
+							</div>
+							<div class="aui-form-ty">
+								注册代表你已同意 <a  style="color: #ed4242">「饰品交易协议」</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="aui-content-box-fr">
+				<div class="aui-content-box-text">
+					<h3>已有帐号:</h3>
+					<a th:href="@{/login}" class="aui-ll-link">直接登录</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript">
+        $(function(){
+
+			/*tab标签切换*/
+            function tabs(tabTit,on,tabCon){
+                $(tabCon).each(function(){
+                    $(this).children().eq(0).show();
+
+                });
+                $(tabTit).each(function(){
+                    $(this).children().eq(0).addClass(on);
+                });
+                $(tabTit).children().click(function(){
+                    $(this).addClass(on).siblings().removeClass(on);
+                    var index = $(tabTit).children().index(this);
+                    $(tabCon).children().eq(index).show().siblings().hide();
+                });
+            }
+            tabs(".aui-form-header","on",".aui-form-content");
+
+        })
+
+		/*发送邮件*/
+		$("#get_code").on("click",function () {
+			var params={};
+			var username = $('input[name="username"]').val();
+			var password = $('input[name="password"]').val();
+			var email = $('input[name="email"]').val();
+			params.username=username
+			params.password=password
+			params.email=email
+			var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+			if (username!=""&&password!=""&&reg.test(email)){
+				$.ajax({
+					url: "/sendRegisterEmail",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success:function (result) {
+						if (result.state==1){
+							console.log(result)
+							$('input[name="code"]').attr("placeholder",result.data);
+							$('input[name="username"]').attr("disabled",true);
+							$('input[name="password"]').attr("disabled",true);
+							$('input[name="email"]').attr("disabled",true);
+							timer(30,$('input[name="get_code"]'));
+						}else {
+							alert(result.msg);
+						}
+
+					},
+					error:function () {
+						params.email=$('input[name="name"]').attr("placeholder","发送失败");
+						console.log("error");
+					}
+				});
+			}else {
+				alert("信息有误");
+			}
+
+		});
+		/*禁用登录30s*/
+		function timer(time,bt) {
+			var btn = $(bt);
+			console.log(btn);
+			btn.attr("disabled", true);  //按钮禁止点击
+			btn.val(time <= 0 ? "发送动态密码" : ("" + (time) + "秒后可发送"));
+			var hander = setInterval(function() {
+				if (time <= 0) {
+					clearInterval(hander); //清除倒计时
+					btn.val("发送动态密码");
+					btn.attr("disabled", false);
+					$('input[name="username"]').attr("disabled",false);
+					$('input[name="password"]').attr("disabled",false);
+					$('input[name="email"]').attr("disabled",false);
+					return false;
+				}else {
+					btn.val("" + (time--) + "秒后可发送");
+				}
+			}, 1000);
+		}
+
+		/*注册*/
+		$("#register").on("click",function () {
+			var params={};
+			var email = $('input[name="email"]').val();
+			var code = $('input[name="code"]').val();
+			var username = $('input[name="username"]').val();
+			var password = $('input[name="password"]').val();
+			params.email= email;
+			params.code= code;
+			console.log(params);
+			var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+			if (reg.test(email)&&email!=""&&username!=""&&password!=""){
+				$.ajax({
+					url: "/register",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success:function (result) {
+						if (result.state == 1) {
+							window.location.href=result.redirectUrl;
+						}else {
+							$('input[name="code"]').val("验证码错误");
+						}
+
+						console.log(result);
+					},
+					error:function (result) {
+						console.log("error");
+						$('input[name="code"]').attr("placeholder",result.msg);
+					}
+				});
+			}else {
+				alert("信息有误");
+			}
+
+		});
+	</script>
+
+</body>
+</html>

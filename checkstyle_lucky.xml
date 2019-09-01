@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 	<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+			"http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<!-- This configuration file was written by the eclipse-cs plugin configuration 
+	editor -->
+<!-- Checkstyle-Configuration: TTPod Checks Description: Slightly modified 
+	version of TTPod Checks that better matches the default code formatter setting 
+	of Eclipse. -->
+<module name="Checker">
+	<property name="charset" value="UTF-8" />
+	<property name="severity" value="warning" />
+
+	<!-- 文件长度不超过2000行,default2000行 -->
+	<!--<module name="FileLength"> <property name="max" value="1500" /> <message 
+		key="maxLen.file" value="文件 {0,number,integer} 行 (最大行数为： {1,number,integer})." 
+		/> </module> -->
+
+	<!-- 重复代码的检查，超过8行就认为重复，UTF-8格式， 本检查一定要放在"TreeWalker"节点前， 否则在Checkclipse中会无法使用。(在ant下可以)    -->
+	<!-- <module name="StrictDuplicateCode"> <property name="min" value="8" 
+		/>  <property name="charset" value="UTF-8" />    </module> -->
+
+	<module name="TreeWalker">
+		<property name="tabWidth" value="4" />
+		<module name="PackageDeclaration">
+			<message key="missing.package.declaration" value="缺少包的定义." />
+			<message key="package.dir.mismatch" value="包定义与目录名不匹配 ''{0}''." />
+		</module>
+		<!-- 包名的检测,必须以com.ttpod.工程名命名,且必须全小写,$\{projectname\} -->
+		<module name="PackageName">
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$" />
+			<message key="name.invalidPattern" value="包名 ''{0}'' 必须符合正则表达式 ''{1}''." />
+		</module>
+		<!-- 检查所有的interface和class,允许未知的标签 -->
+		<module name="JavadocType">
+			<property name="allowUnknownTags" value="true" />
+			<message key="javadoc.missing" value="类注释：缺少Javadoc注释。" />
+			<message key="type.missingTag" value="注解缺少 {0} tag." />
+			<message key="javadoc.missing" value="缺少注解" />
+			<message key="javadoc.unusedTagGeneral" value="不使用的注解tag" />
+			<message key="type.tagFormat" value="注解tag {0} 必须符合正则表达式 ''{1}''." />
+		</module>
+
+		<!-- 检查所有方法的javadoc，可以不声明RuntimeException -->
+		<module name="JavadocMethod">
+			<!--<property name="allowUndeclaredRTE" value="true"/> -->
+			<!--允许get set 方法没有注释 -->
+			<property name="allowMissingPropertyJavadoc" value="true" />
+			<message key="javadoc.missing" value="方法注释：缺少Javadoc注释。" />
+			<message key="javadoc.expectedTag" value="缺少 {0} {1} 的注释" />
+			<message key="javadoc.unused.expectedTag" value="返回类型 {0} {1} 需要注释" />
+			<message key="javadoc.return.unusedTag" value="没有使用 {0} {1} 的注释" />
+		</module>
+
+		<!-- 检查某个变量的javadoc -->
+
+		<module name="JavadocVariable">
+			<message key="javadoc.missing" value="变量注释：缺少Javadoc注释。" />
+		</module>
+
+		<!--注解设置 -->
+		<module name="AnnotationUseStyle">
+			<!--注解的参数样式 忽略 -->
+			<property name="elementStyle" value="ignore" />
+			<!--是否在数组元素后尾随逗号 忽略 -->
+			<property name="trailingArrayComma" value="ignore" />
+			<!--检查是否保留结束括号 忽略 -->
+			<property name="closingParens" value="ignore" />
+		</module>
+
+		<!-- 命名规范 -->
+		<!-- 类的命名,匹配规则默认:(^[A-Z][a-zA-Z0-9]*$),必须以大写字母开始 -->
+		<module name="TypeName">
+			<property name="tokens" value="CLASS_DEF" />
+			<message key="name.invalidPattern" value="类的命名必须以大写字母开始" />
+		</module>
+
+		<!-- 接口命名,匹配规则:(^I[A-Z][a-zA-Z0-9]*$),必须以大写I开始 -->
+		<module name="TypeName">
+			<property name="format" value="^[A-Z][a-zA-Z0-9]*$" />
+			<property name="tokens" value="INTERFACE_DEF" />
+			<message key="name.invalidPattern" value="接口命名必须以大写字母开始" />
+		</module>
+
+		<!-- 变量的检查 匹配规则默认^[a-z][a-zA-Z0-9]*$ 范围： 非static型变量 命名为小写 -->
+		<module name="MemberName">
+			<message key="name.invalidPattern" value="变量命名不符合规范 " />
+		</module>
+
+		<!-- 方法名的检查 匹配规则默认^[a-z][a-zA-Z0-9]*$ 范围：方法名 命名为小写 -->
+		<module name="MethodName">
+			<message key="name.invalidPattern" value="方法名： ''{0}''必须符合以下正则表达式 ''{1}''." />
+		</module>
+
+		<!-- 重载父类方法 -->
+		<module name="MissingOverride">
+			<message key="annotation.missing.override" value="重载方法缺少@Override，违反编码规范5.5章节" />
+			<message key="tag.not.valid.on" value="注释-> Javadoc {0}标签在这个位置是无效的." />
+		</module>
+
+		<!-- 方法的参数名 匹配规则默认^[a-z][a-zA-Z0-9]*$ 范围：方法中的参数名 命名为小写 -->
+		<module name="ParameterName ">
+			<message key="name.invalidPattern" value="方法参数命名不符合规范" />
+		</module>
+		<!-- 常量名的检查 匹配规则默认^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$ 范围：常量(static , final 字段) 
+			命名为大写 -->
+		<module name="ConstantName">
+			<message key="name.invalidPattern" value="常量命名建议大写" />
+		</module>
+
+
+
+		<!-- 限制导入.*包的检查,允许导入java.io.*,java.net.*,java.lang.Math.*,其它不允许 -->
+		<!-- <module name="AvoidStarImport"> <property name="excludes" value="java.io,java.net,java.lang.Math"/> 
+			实例；import java.util.*;. <property name="allowClassImports" value="false" 
+			/> 实例 ；import static org.junit.Assert.*; <property name="allowStaticMemberImports" 
+			value="true" /> </module> -->
+
+		<!-- 限制导入多余的包,例如java.lang.String -->
+		<module name="RedundantImport">
+			<message key="import.lang" value="java.lang下的包无需导入- {0}." />
+		</module>
+
+		<!-- 限制导入未使用过的类 -->
+		<module name="UnusedImports">
+			<message key="import.unused" value="没被使用过 import - {0}." />
+		</module>
+
+		<!--代码规范 -->
+		<!-- 每行不超过150个字,默认80 -->
+		<module name="LineLength">
+			<property name="max" value="150" />
+			<message key="maxLineLen" value="行字符数超过 {0,number,integer} 个." />
+		</module>
+
+		<!-- 即制方法和构造函数行数不超过多少行,默认160行(不包括空行) -->
+		<module name="MethodLength">
+			<property name="countEmpty" value="false" />
+			<property name="tokens" value="METHOD_DEF,CTOR_DEF" />
+			<property name="max" value="160" />
+			<message key="maxLen.method"
+				value="方法长度 {0,number,integer} 行 (最大允许行数为 {1,number,integer})." />
+
+		</module>
+
+		<!-- 不能出现大块空白区域 -->
+		<module name="GenericWhitespace" />
+
+		<!-- 检查是否有未初始化的循环变量 -->
+		<module name="EmptyForInitializerPad" />
+
+		<!-- 不许出现空语句 int a = 0; //正常 ; // 这里就是一个空的语句 -->
+		<module name="EmptyStatement">
+			<message key="empty.statement" value="空代码块." />
+		</module>
+
+		<!-- 不能容忍魔法数,范围 double，int 忽略0,1 -->
+		<module name="MagicNumber">
+			<property name="tokens" value="NUM_DOUBLE, NUM_FLOAT, NUM_INT" />
+			<property name="ignoreNumbers" value="-1,0,1,2,3,4,5,6,7,8,9" />
+			<property name="ignoreAnnotation" value="true" />
+			<message key="magic.number" value="''{0}'' 是一个魔法数(即常数)" />
+		</module>
+
+		<!-- String的比较不能用!= 和 == -->
+		<module name="StringLiteralEquality">
+			<message key="StringLiteralEquality" value="字符串操作：字符串比较不能使用==,!=" />
+		</module>
+
+		<!-- 限制for循环最多嵌套3层 -->
+		<module name="NestedForDepth">
+			<property name="max" value="3" />
+			<message key="nested.if.depth"
+				value="for嵌套语句个数为 {0,number,integer} (最大允许嵌套语句个数为: {1,number,integer})." />
+
+		</module>
+
+		<!-- if最多嵌套5层 -->
+		<module name="NestedIfDepth">
+			<property name="max" value="3" />
+			<message key="nested.if.depth"
+				value="if-else嵌套语句个数为 {0,number,integer} (最大允许嵌套语句个数为: {1,number,integer})." />
+		</module>
+
+		<!-- 确保声明被初始化,例：对象是null,数字和字符是0 <module name="ExplicitInitialization" /> -->
+
+		<!-- 同一行不能有多个声明 -->
+		<module name="MultipleVariableDeclarations">
+			<message key="multiple.variable.declarations.comma" value="每一个变量的定义必须在它的声明处，且在同一行." />
+			<message key="multiple.variable.declarations" value="每一行只能定义一个变量." />
+		</module>
+
+		<!-- TODO的检查,表示不要出现todo未办事项目 -->
+		<module name="TodoComment">
+			<property name="format" value="TODO\W+" />
+			<message key="todo.match" value="TODO注释：不应该出现" />
+		</module>
+
+		<!-- 检查未被注释的main方法,排除以Main结尾命名的类 -->
+		<module name="UncommentedMain">
+			<property name="excludedClasses" value=".*Main$" />
+			<message key="uncommented.main" value="main方法缺少注释" />
+		</module>
+
+		<!-- 检查数组声明风格 只能为java 例如: String[] args -->
+		<module name="ArrayTypeStyle">
+			<message key="array.type.style" value="数组中括号位置不对,建议如:String[] args." />
+		</module>
+
+		<!-- 检查左侧大括号 左侧大括号必须放在前一行代码的行尾 -->
+		<module name="LeftCurly">
+			<property name="severity" value="warning" />
+			<message key="line.previous" value="左侧大括号必须放在前一行代码的行尾" />
+		</module>
+
+		<!-- 对关键字else、try和catch的右侧大括号放置位置进行检查 -->
+		<module name="RightCurly">
+			<property name="severity" value="warning" />
+			<!--与下一语句放在同一行 -->
+			<property name="option" value="same" />
+			<message key="line.alone" value="''{0}'' 应该单独一行" />
+		</module>
+
+		<!-- 禁止使用System.out.println -->
+		<module name="Regexp">
+			<property name="format" value="System\.out\.println" />
+			<property name="illegalPattern" value="true" />
+			<property name="message"
+				value="不要使用 System.out.println控制台打印语句，应该使用日志工具类(如：log4j)进行统一记录或者打印" />
+
+		</module>
+
+		<!--判断语句使用 -->
+		<module name="SimplifyBooleanExpression">
+			<property name="severity" value="error" />
+			<message key="simplify.expression" value="存在布尔冗余" />
+		</module>
+
+		<!-- 检查switch语句是否忘记了default标签 -->
+		<module name="MissingSwitchDefault">
+			<property name="severity" value="error" />
+			<message key="missing.switch.default" value="switch 语句后边没有 default 语句." />
+		</module>
+
+		<!-- 检查switch语句中default标签的顺序 -->
+		<module name="DefaultComesLast">
+			<property name="severity" value="error" />
+			<message key="default.comes.last" value="建议Default 放在 switch 语句的最后." />
+		</module>
+
+		<!--避免 null.equals("sss")情况 -->
+		<module name="EqualsAvoidNull">
+			<message key="equals.avoid.null" value="字符串equals函数：建议字符串位于equals的左侧，字符串变量位于equals的参数" />
+		</module>
+
+		<!-- 异常抛出数量定义 -->
+		<module name="ThrowsCount">
+			<property name="max" value="3" />
+			<message key="throws.count"
+				value="Throws数量个数为{0,number,integer} (最大允许个数为：{1,number,integer})" />
+		</module>
+
+		<!-- 参数个数定义 最多三个 -->
+		<module name="ParameterNumber">
+			<property name="max" value="7" />
+			<message key="maxParam"
+				value="参数个数超过{0,number,integer}个 (实际个数为：{1,number,integer})" />
+		</module>
+
+		<!-- return个数 3个 -->
+		<module name="ReturnCount">
+			<property name="max" value="3" />
+			<message key="return.count"
+				value="Return数量个数为{0,number,integer} (最大允许个数为：{1,number,integer})" />
+		</module>
+
+		<!--try catch 异常处理数量 3 -->
+		<module name="NestedTryDepth ">
+			<property name="max" value="3" />
+			<message key="nested.try.depth"
+				value="try嵌套个数是{0,number,integer}  (最大允许嵌套个数为: {1,number,integer})" />
+		</module>
+
+		<!-- 检查代码块是否缺失大括号 -->
+		<module name="NeedBraces">
+			<message key="needBraces" value="''{0}'' 结构没有用大括号 '''{}'''" />
+		</module>
+	</module>
+</module>

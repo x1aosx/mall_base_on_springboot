@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  >
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>管理员登录</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/static/css/admin/bootstrap.css" rel="stylesheet" />
+    <link href="/static/css/bootstrap/bootstrap-theme.css">
+    <!-- FONTAWESOME STYLES-->
+    <link href="/static/css/admin/font-awesome.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+</head>
+<body style="background-color: #E2E2E2;">
+    <div class="container">
+        <div class="row text-center " style="padding-top:100px;">
+            <div class="col-md-12">
+                <img src="/static/images/admin/logo.jpg" />
+            </div>
+        </div>
+         <div class="row ">
+               
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+                            <div class="panel-body">
+                                <form role="form" id="login_form">
+                                    <hr />
+                                    <h5>Enter Details to Login</h5>
+                                       <br />
+                                     <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
+                                            <input type="text" class="form-control" placeholder="Your Username " name="username" required/>
+                                        </div>
+                                            <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
+                                            <input type="password" class="form-control"  placeholder="Your Password" name="password" required/>
+                                        </div>
+                                    <div class="form-group">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" /> Remember me
+                                            </label>
+                                            <span class="pull-right">
+                                                   <a href="index.html" >Forget password ? </a> 
+                                            </span>
+                                        </div>
+                                     
+                                     <a onclick="login()" class="btn btn-primary " id="login_link">Login Now</a>
+                                    <button type="button" hidden data-toggle="modal" data-target="#myModal" id="showError"></button>
+                                    <hr />
+                                    Not register ? <a href="index.html" >click here </a> or go to <a href="index.html">Home</a>
+                                    </form>
+                            </div>
+                        </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body" >
+                    <div class="alert alert-danger">
+                       <a href="#" class="alert-link" id="errorMessage"></a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+<script src="/static/js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript">
+    $("#login_form").keydown(function(e){
+    	if(e.keyCode==13){
+    		$("#login_link").click();
+    	}
+    });
+    function login() {
+        /*账号密码登录*/
+            var params={};
+            params.username=$('input[name="username"]').val();
+            params.password=$('input[name="password"]').val();
+
+            $.ajax({
+                url: "/adminLogin",
+                data: params,
+                dataType:"json",
+                type:"post",
+                success:function (result) {
+                    if (result.state == 1) {
+                        window.location.href=result.redirectUrl;
+                    }else {
+                        console.log(result.msg);
+                        $("#errorMessage").html(result.msg);
+                        $("#showError").click();
+                        // $('#myModal').on('shown.bs.modal', function () {
+                        //     $('#myInput').focus()
+                        // })
+                    }
+
+
+                },
+                error:function (result) {
+                    console.log(result);
+                    console.log("error");
+                }
+            });
+    }
+</script>
+</html>

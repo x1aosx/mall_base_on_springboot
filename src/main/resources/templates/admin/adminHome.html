@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>饰品商城管理</title>
+
+        <!-- BOOTSTRAP STYLES-->
+        <link href="/static/css/admin/bootstrap.css" rel="stylesheet"/>
+        <!-- FONTAWESOME STYLES-->
+        <link href="/static/css/admin/font-awesome.css" rel="stylesheet"/>
+        <!--CUSTOM BASIC STYLES-->
+        <link href="/static/css/admin/basic.css" rel="stylesheet"/>
+        <!--CUSTOM MAIN STYLES-->
+        <link href="/static/css/admin/custom.css" rel="stylesheet"/>
+        <!-- GOOGLE FONTS-->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+        <!--数字滚动样式-->
+        <style type="text/css">
+            .demo{ padding: 2em 0;}
+            .counter{
+                padding: 20px 0;
+                text-align: center;
+                position: relative;
+            }
+            .counter .counter-content{
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                background: #fff;
+                padding: 30px 0;
+                margin: 0 auto 30px;
+                z-index: 1;
+                position: relative;
+                transition: all 0.3s ease 0s;
+            }
+            .counter .counter-content:before{
+                content: "";
+                width: 122%;
+                height: 122%;
+                border-radius: 50%;
+                border: 20px solid #f19f48;
+                border-bottom: 20px solid transparent;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }
+            .counter .counter-content:after{
+                content: "";
+                border-top: 16px solid #f19f48;
+                border-left: 16px solid transparent;
+                border-right: 16px solid transparent;
+                position: absolute;
+                bottom: -14px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .counter .counter-icon{
+                display: block;
+                font-size: 50px;
+                color: #f19f48;
+                line-height: 50px;
+            }
+            .counter .counter-value{
+                font-size: 50px;
+                font-weight: 700;
+                color: rgba(0,0,0,0.7);
+                line-height: 70px;
+            }
+            .counter .title{
+                display: inline-block;
+                padding: 5px 25px;
+                background: #f19f48;
+                border-radius: 10px;
+                font-size: 20px;
+                font-weight: 600;
+                color: #fff;
+                text-transform: capitalize;
+                margin: 0;
+            }
+            .counter.red .counter-content:before{
+                border-color: #ef5f61;
+                border-bottom-color: transparent;
+            }
+            .counter.red .counter-content:after{ border-top-color: #ef5f61; }
+            .counter.red .counter-icon{ color: #ef5f61; }
+            .counter.red .title{ background: #ef5f61; }
+            .counter.blue .counter-content:before{
+                border-color: #4d9fcf;
+                border-bottom-color: transparent;
+            }
+            .counter.blue .counter-content:after{ border-top-color: #4d9fcf; }
+            .counter.blue .counter-icon{ color: #4d9fcf; }
+            .counter.blue .title{ background: #4d9fcf; }
+            .counter.purple .counter-content:before{
+                border-color: #a98ceb;
+                border-bottom-color: transparent;
+            }
+            .counter.purple .counter-content:after{ border-top-color: #a98ceb; }
+            .counter.purple .counter-icon{ color: #a98ceb; }
+            .counter.purple .title{ background: #a98ceb; }
+        </style>
+
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav th:replace="adminCommon::admin_top"></nav>
+            <!-- /. NAV TOP  -->
+            <nav class="navbar-default navbar-side" role="navigation" th:replace="adminCommon::admin_left"></nav>
+            <div id="page-wrapper">
+                <div id="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="page-head-line">主页</h1>
+                            <h1 class="page-subhead-line">信息统计</h1>
+                            <div class="demo">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-6">
+                                            <div class="counter">
+                                                <div class="counter-content">
+                                                    <div class="counter-icon fa fa-globe"></div>
+                                                    <span class="counter-value" th:text="${pointsCount}">123456</span>
+                                                </div>
+                                                <h3 class="title" >积分记录</h3>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-6">
+                                            <div class="counter red">
+                                                <div class="counter-content">
+                                                    <div class="counter-icon fa fa-rocket"></div>
+                                                    <span class="counter-value" th:text="${tickerCount}">952</span>
+                                                </div>
+                                                <h3 class="title" >订单成交数</h3>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-6">
+                                            <div class="counter blue">
+                                                <div class="counter-content">
+                                                    <div class="counter-icon fa fa-briefcase"></div>
+                                                    <span class="counter-value" th:text="${goodsCount}">578</span>
+                                                </div>
+                                                <h3 class="title" >商品数量</h3>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-6">
+                                            <div class="counter purple">
+                                                <div class="counter-content">
+                                                    <div class="counter-icon fa fa-mobile"></div>
+                                                    <span class="counter-value" th:text="${accountCount}">1450</span>
+                                                </div>
+                                                <h3 class="title" >会员数量</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--在这里插入内容-->
+                <!-- /. PAGE INNER  -->
+            </div>
+            <!--        &lt;!&ndash; /. NAV SIDE  &ndash;&gt;-->
+            <div th:replace="adminCommon::admin_bottom"></div>
+            <!-- /. PAGE WRAPPER  -->
+        </div>
+        <!-- /. WRAPPER  -->
+
+        <!-- /. FOOTER  -->
+        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+        <!-- JQUERY SCRIPTS -->
+        <script src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="/static/js/admin/bootstrap.js"></script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="/static/js/admin/jquery.metisMenu.js"></script>
+        <!-- CUSTOM SCRIPTS -->
+        <script src="/static/js/admin/custom.js"></script>
+        <!--饰品种类-->
+        <script type="text/javascript" th:replace="adminCommon::categories"></script>
+        <!--数字滚动-->
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+                $('.counter-value').each(function(){
+                    $(this).prop('Counter',0).animate({
+                        Counter: $(this).text()
+                    },{
+                        duration: 3500,
+                        easing: 'swing',
+                        step: function (now){
+                            $(this).text(Math.ceil(now));
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

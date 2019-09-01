@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>饰品商城管理</title>
+
+        <!-- BOOTSTRAP STYLES-->
+        <link href="/static/css/admin/bootstrap.css" rel="stylesheet"/>
+        <!-- FONTAWESOME STYLES-->
+        <link href="/static/css/admin/font-awesome.css" rel="stylesheet"/>
+        <!--CUSTOM BASIC STYLES-->
+        <link href="/static/css/admin/basic.css" rel="stylesheet"/>
+        <!--CUSTOM MAIN STYLES-->
+        <link href="/static/css/admin/custom.css" rel="stylesheet"/>
+        <!-- GOOGLE FONTS-->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+        <!-- PAGE LEVEL STYLES -->
+        <link href="/static/css/admin/bootstrap-fileupload.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav th:replace="adminCommon::admin_top"></nav>
+            <!-- /. NAV TOP  -->
+            <nav class="navbar-default navbar-side" role="navigation" th:replace="adminCommon::admin_left"></nav>
+            <div id="page-wrapper">
+                <div id="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="page-head-line">添加商品</h1>
+                            <h1 class="page-subhead-line">请仔细核对您的商品信息</h1>
+                            <h1>添加商品</h1>
+                        </div>
+                    </div>
+                    <form enctype="multipart/form-data" method="post">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        商品信息
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>饰品名称</label>
+                                            <input class="form-control" type="text" id="name">
+                                            <p class="help-block">请在这里输入饰品名称</p>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>饰品价格</label>
+                                            <input class="form-control" type="number" id="price">
+                                            <p class="help-block">请在这里输入饰品价格</p>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>饰品交易产生积分</label>
+                                            <input class="form-control" type="number" id="pointsNeed">
+                                            <p class="help-block">请在这里输入单件产生积分</p>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>折扣力度</label>
+                                            <input class="form-control" id="discount" type="number" maxlength="2"
+                                                   onkeyup="value=value.replace( /^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')"
+                                                   onblur="value=value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')">
+                                            <p class="help-block">请在这里输入折扣力度(0~1)</p>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>饰品库存</label>
+                                            <input class="form-control" type="number" id="stock">
+                                            <p class="help-block">请在这里输入饰品库存</p>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        商品信息
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>请选择饰品类型</label>
+                                            <select class="form-control" id="category">
+                                                <option value="0">点击选择</option>
+                                            </select>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>请选择饰品等级</label>
+                                            <select class="form-control" id="level">
+                                                <option value="0">点击选择</option>
+                                                <option value="1">工业</option>
+                                                <option value="2">军规</option>
+                                                <option value="3">受限</option>
+                                                <option value="4">保密</option>
+                                                <option value="5">隐秘</option>
+                                                <option value="6">传说</option>
+
+                                            </select>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>饰品描述</label>
+                                            <textarea class="form-control" rows="4" id="description"></textarea>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-4">Pre Defined Image</label>
+                                            <div class="">
+                                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                    <div class="fileupload-new thumbnail"
+                                                         style="width: 200px; height: 150px;">
+                                                        <img src="/static/images/admin/demoUpload.jpg" alt=""/></div>
+                                                    <div class="fileupload-preview fileupload-exists thumbnail"
+                                                         style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                                                    <div>
+                                                <span class="btn btn-file btn-primary"><span
+                                                        class="fileupload-new">选择图片</span><span
+                                                        class="fileupload-exists">选择其他图片</span><input
+                                                        type="file" name="image" id="productImage"></span>
+                                                        <a href="#" class="btn btn-danger fileupload-exists"
+                                                           data-dismiss="fileupload">移除图片</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-lg btn-danger" style="width: 100%"
+                                                    onclick="addProduct()">添加饰品
+                                            </button>
+                                        </div>
+                                        <hr>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /. PAGE INNER  -->
+            </div>
+            <!--        &lt;!&ndash; /. NAV SIDE  &ndash;&gt;-->
+            <div th:replace="adminCommon::admin_bottom"></div>
+            <!-- /. PAGE WRAPPER  -->
+        </div>
+        <div></div>
+        <button type="button" hidden data-toggle="modal" data-target="#myModal" id="showMessage"></button>
+        <div th:replace="adminCommon::modal"></div>
+
+        <script src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="/static/js/admin/bootstrap.js"></script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="/static/js/admin/jquery.metisMenu.js"></script>
+        <!-- CUSTOM SCRIPTS -->
+        <script src="/static/js/admin/custom.js"></script>
+        <!-- PAGE LEVEL SCRIPTS -->
+        <script src="/static/js/admin/bootstrap-fileupload.js"></script>
+        <!---->
+        <script type="text/javascript" th:replace="adminCommon::categories"></script>
+
+        <!--获取饰品类别-->
+        <script type="text/javascript">
+            (function ($) {
+                var categories;
+                $.ajax({
+                    url: "/getActivatedType",
+                    dataType: "json",
+                    type: "post",
+                    success: function (result) {
+                        categories = result.data.types;
+                        for (var i = 0; i < categories.length; i++) {
+                            var option = inertCategoryOption(categories[i].id, "  " + categories[i].name)
+                            $("#category").append(option);
+                        }
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            })(jQuery);
+
+            function inertCategoryOption(type, name) {
+                var html = '<option value="' + type + '">' + name + '</option>';
+                return html;
+            }
+        </script>
+        <!--添加饰品-->
+        <script type="text/javascript">
+            function addProduct() {
+                var formData = new FormData();
+                formData.append('name', $("#name").val());
+                formData.append('price', $("#price").val());
+                formData.append('type', $("#category").val());
+                formData.append('pointsNeed', $("#pointsNeed").val());
+                formData.append('discount', $("#discount").val());
+                formData.append('description', $("#description").val());
+                formData.append('stock', $("#stock").val());
+                formData.append('level', $("#level").val());
+
+                formData.append('productImage', $('#productImage')[0].files[0]);//图片信息
+
+                $.ajax({
+                    type: 'post',
+                    contentType: false,
+                    processData: false,
+                    url: '/addProduct',
+                    data: formData,
+                    success: function (result) {
+                        if (result.state == 1) {
+                            console.log("success");
+                            $("#message").html(result.data);
+                            $("#showMessage").click();
+                            $("#close-btn").click(function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            $("#message").html(result.msg);
+                            $("#message").removeClass("alert-primary");
+                            $("#message").addClass("alert-danger")
+                            $("#showMessage").click();
+                        }
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            }
+
+
+        </script>
+    </body>
+</html>

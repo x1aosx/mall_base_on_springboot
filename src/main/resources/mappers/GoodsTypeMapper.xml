@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucky.mall.mapper.GoodsTypeMapper">
+    <select id="selectByStatus" parameterType="java.lang.Integer" resultType="GoodsType">
+        select id,name
+        from goodstype
+        where status = #{status}
+    </select>
+</mapper>

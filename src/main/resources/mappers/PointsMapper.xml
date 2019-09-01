@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucky.mall.mapper.PointsMapper">
+    <insert id="insertPoints" parameterType="Points">
+        insert into points(id, tickerId, createTime, type, accountId,number)
+        value (#{id},#{tickerId},#{createTime},#{type},#{accountId},#{number})
+    </insert>
+
+    <select id="selectByType" parameterType="int" resultType="Points">
+        select id,tickerId,createTime,accountId,accountId,number
+        from points
+        where type = #{type}
+    </select>
+
+    <select id="selectByAccountId" parameterType="int" resultType="Points">
+        select id,tickerId,createTime,type,number
+        from points
+        where accountId = ${accountId}
+    </select>
+
+    <select id="selectCount" parameterType="int" resultType="int">
+       SELECT COUNT(*) FROM points
+    </select>
+</mapper>

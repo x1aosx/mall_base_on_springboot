@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:maxlength="http://www.w3.org/1999/xhtml">
+<head>
+<title>订单</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Sublime project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/static/home/styles/bootstrap4/bootstrap.min.css">
+<link href="/static/home/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/static/home/styles/checkout.css">
+<link rel="stylesheet" type="text/css" href="/static/home/styles/checkout_responsive.css">
+</head>
+<body>
+
+<div class="super_container">
+
+	<!-- Header -->
+
+	<header class="header" th:replace="userCommon::Header"></header>
+
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_container">
+			<div class="home_background" style="background-image:url(/static/home/images/cart.jpg)"></div>
+			<div class="home_content_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="home_content">
+								<div class="breadcrumbs">
+									<ul>
+										<li><a href="/home">主页</a></li>
+										<li><a href="/cart">购物车</a></li>
+										<li>订单</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Checkout -->
+	
+	<div class="checkout" >
+		<div class="container" >
+			<div class="row" >
+				<!-- Order Info -->
+
+				<div class="col-lg-6">
+					<div class="order checkout_section" style="position: relative;left: 50%;" >
+						<div class="section_title">您的订单</div>
+						<div class="section_subtitle">订单详情</div>
+
+						<!-- Order details -->
+						<div class="order_list_container" >
+							<div th:each="ticker:${tickerList}">
+								<div class="order_list_bar d-flex flex-row align-items-center justify-content-start">
+									<div class="order_list_title">饰品</div>
+									<div class="order_list_value ml-auto" th:text="${ticker.goodsName}"></div>
+								</div>
+								<ul class="order_list ticker-item" th:data="${ticker.id}">
+									<li class="d-flex flex-row align-items-center justify-content-start">
+										<div class="order_list_title">价格</div>
+										<div class="order_list_value ml-auto" th:text="${#numbers.formatDecimal(ticker.price,1,2)}" maxlength="4"></div>
+									</li>
+									<li class="d-flex flex-row align-items-center justify-content-start">
+										<div class="order_list_title">数量</div>
+										<div class="order_list_value ml-auto" th:text="${ticker.number}"></div>
+									</li>
+									<li class="d-flex flex-row align-items-center justify-content-start">
+										<div class="order_list_title">积分</div>
+										<div class="order_list_value ml-auto" th:text="${ticker.points}"></div>
+									</li>
+									<li class="d-flex flex-row align-items-center justify-content-start">
+										<div class="order_list_title" style="color: red">小计</div>
+										<div class="order_list_value ml-auto price" style="color: red" th:text="${#numbers.formatDecimal(ticker.number*ticker.price,1,2)}" maxlength="4"></div>
+									</li>
+									<hr>
+								</ul>
+							</div>
+							<ul class="order_list">
+								<li class="d-flex flex-row align-items-center justify-content-start">
+									<div class="order_list_title" style="color: red;font-size: 18px">总计</div>
+									<div class="order_list_value ml-auto" style="color: red;font-size: 18px" id="totalPrice"></div>
+								</li>
+
+							</ul>
+						</div>
+
+						<!-- Payment Options -->
+						<hr>
+						<div class="payment">
+							<div class="payment_options">
+								<label class="payment_option clearfix">Paypal
+									<input type="radio" name="radio">
+									<span class="checkmark"></span>
+								</label>
+								<label class="payment_option clearfix">支付宝
+									<input type="radio" name="radio">
+									<span class="checkmark"></span>
+								</label>
+								<label class="payment_option clearfix">微信
+									<input type="radio" name="radio">
+									<span class="checkmark"></span>
+								</label>
+								<label class="payment_option clearfix">银行转账
+									<input type="radio" checked="checked" name="radio">
+									<span class="checkmark"></span>
+								</label>
+							</div>
+						</div>
+
+						<!-- Order Text -->
+						<hr>
+						<div class="order_text">请确认您的订单信息
+							<p>此订单将在5分钟后失效，您可以在个人中心，找到所有未完成订单</p>
+						</div>
+						<div class="button order_button"><a href="#">付款</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+
+	<div class="footer_overlay"></div>
+	<footer th:replace="userCommon::Footer"></footer>
+</div>
+
+<script src="/static/home/js/jquery-3.2.1.min.js"></script>
+<script src="/static/home/styles/bootstrap4/popper.js"></script>
+<script src="/static/home/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="/static/home/plugins/greensock/TweenMax.min.js"></script>
+<script src="/static/home/plugins/greensock/TimelineMax.min.js"></script>
+<script src="/static/home/plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="/static/home/plugins/greensock/animation.gsap.min.js"></script>
+<script src="/static/home/plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="/static/home/plugins/easing/easing.js"></script>
+<script src="/static/home/plugins/parallax-js-master/parallax.min.js"></script>
+<script src="/static/home/js/checkout.js"></script>
+<script type="text/javascript" th:replace="userCommon::categoties"></script>
+<script type="text/javascript">
+	$(function () {
+		<!--计算总金额-->
+		var totalPrice = 0;
+		$(".price").each(function () {
+			totalPrice = totalPrice + parseFloat($(this).text());
+		});
+		$("#totalPrice").text(totalPrice);
+        <!--付款-->
+		$(".button.order_button").click(function () {
+			var tickersId = [];
+			$(".ticker-item").each(function () {
+				tickersId.push($(this).attr("data"));
+				console.log($(this).attr("data"))
+			});
+			console.log(tickersId);
+			var  tickersIdStr =  tickersId.join(",");
+			if (tickersIdStr.length<1){
+				alert("您没有订单可以付款");
+				window.location.href = "/unFinishedTickers";
+			}else {
+				$.ajax({
+					url:'/payment',
+					type:'post',
+					data: {
+						"tickersIdStr":tickersIdStr,
+					},
+					dataType:'json',
+					success:function (result) {
+						if (result.state==1){
+							alert(result.data);
+
+						}else {
+							alert(result.msg);
+						}
+						window.location.href = result.redirectUrl;
+					},
+					error:function () {
+						alert("您的网络异常");
+					}
+				});
+			}
+
+		});
+	});
+</script>
+</body>
+</html>

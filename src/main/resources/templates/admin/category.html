@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
+    <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>饰品商城管理</title>
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/static/css/admin/bootstrap.css" rel="stylesheet"/>
+    <!-- FONTAWESOME STYLES-->
+    <link href="/static/css/admin/font-awesome.css" rel="stylesheet"/>
+    <!--CUSTOM BASIC STYLES-->
+    <link href="/static/css/admin/basic.css" rel="stylesheet"/>
+    <!--CUSTOM MAIN STYLES-->
+    <link href="/static/css/admin/custom.css" rel="stylesheet"/>
+
+    <link href="/static/home/styles/main_styles.css" rel="stylesheet"/>
+    <!-- GOOGLE FONTS-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    </head>
+    <body>
+    <div id="wrapper">
+        <nav th:replace="adminCommon::admin_top"></nav>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation" th:replace="adminCommon::admin_left"></nav>
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">[[${types[#httpServletRequest.getParameter('type')]}]]</h1>
+                        <h1 class="page-subhead-line">以下为搜寻结果</h1>
+                        <!--饰品-->
+                        <div class="product" style="float: left;margin-left: 10px;margin-right: 10px;margin-top: 20px;"
+                             th:each="product : ${pageInfo.list}">
+                            <div class="product_image"><img th:src="${product.image}" alt=""></div>
+                            <div th:class="${'product_extra product_level_' + product.level}"><a href="category.html">[[${levelName[product.level]}]]</a>
+                            </div>
+                            <div class="product_content">
+                                <div class="product_title "><a class="form-inline" th:href="@{showGoodsToUser(id=${product.id})}"
+                                                               th:text=" ${product.name}"></a></div>
+                                <div class="product_price" th:text="${'$' +  product.price}"></div>
+                                <div style="position:relative;top: 10px">
+                                    <button class="btn btn-primary" style="position:relative;left: 5%;width: 40%"
+                                            th:id="${product.id}" onclick="showDetail(this.id)">查看详情
+                                    </button>
+                                    <button hidden data-toggle="modal" data-target="#myModal" id="showDetail"></button>
+                                    <button class="btn btn-danger" style="position:relative;left: 15%;width: 40%"
+                                            th:id="${product.id}" onclick="deleteGoods(this.id)">删除饰品
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div style="float: none;position:relative;bottom: 5px;left:20px">
+                <ul class="pagination">
+                    <li><a href="#">&laquo;</a></li>
+                    <li><a th:href="@{/showGoodsByTypeToAdmin(type=${param.type},page=${i})}"  th:each="i :${#numbers.sequence(pageInfo.navigateFirstPage,pageInfo.navigateLastPage)}" th:text="  ${i}"   th:class="${pageInfo.pageNum == i}? 'page-item active' :' page-item' "></a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!--        &lt;!&ndash; /. NAV SIDE  &ndash;&gt;-->
+        <div th:replace="adminCommon::admin_bottom"></div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         style="overflow:scroll;;padding-right:15px" th:fragment="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="product_image"><img src="/static/images/product/product_4.png" alt="" id="productImage">
+                    </div>
+                    <div class="panel-heading">图片详情</div>
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>属性</th>
+                                <th>内容</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="list-group-item-success">
+                                <td>1</td>
+                                <td>名字</td>
+                                <td id="productName"></td>
+                                <td></td>
+                            </tr>
+                            <tr class="list-group-item-danger">
+                                <td>2</td>
+                                <td>价格</td>
+                                <td id="productPrice"></td>
+                                <td></td>
+                            </tr>
+                            <tr class="list-group-item-info">
+                                <td>3</td>
+                                <td>积分</td>
+                                <td id="productPointsNeed"></td>
+                                <td></td>
+                            </tr>
+                            <tr class="list-group-item-warning">
+                                <td>4</td>
+                                <td>折扣</td>
+                                <td id="productDiscount"></td>
+                                <td></td>
+                            </tr>
+                            <tr class="list-group-item-info">
+                                <td>5</td>
+                                <td>库存</td>
+                                <td id="productStock"></td>
+                                <td></td>
+                            </tr>
+                            <tr class="list-group-item-danger">
+                                <td>6</td>
+                                <td>等级</td>
+                                <td id="productLevel"></td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-warning" id="updateBtn" >进行修改</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+    <!-- /. WRAPPER  -->
+
+    <!-- /. FOOTER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+<!--    <script src="/static/js/admin/jquery-1.10.2.js"></script>-->
+    <script src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="/static/js/admin/bootstrap.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="/static/js/admin/jquery.metisMenu.js"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="/static/js/admin/custom.js"></script>
+
+    <!--饰品种类-->
+    <script type="text/javascript" th:replace="adminCommon::categories"></script>
+    <!--商品详情-->
+    <script type="text/javascript">
+        function showDetail(id) {
+            console.log(id);
+
+            $.ajax({
+                url: "/productDetail",
+                data: {
+                    "id":id,
+                },
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    console.log(result.data.image);
+                    $("#productImage").attr("src", result.data.image);
+                    $("#productName").html(result.data.name);
+                    $("#productPrice").html(result.data.price)
+                    $("#productPointsNeed").html(result.data.pointsNeed);
+                    $("#productDiscount").html(result.data.discount);
+                    $("#productStock").html(result.data.stock);
+                    $("#productLevel").html(result.data.level);
+                    $("#updateBtn").attr("onclick",'updateProduct(' + id + ')');
+                    $("#showDetail").click();
+                },
+                error: function (result) {
+                    console.log(result);
+                    console.log("error");
+                }
+            });
+        }
+        //修改饰品
+        function updateProduct(id) {
+            var url=window.location.href;
+            var page=GetParam(url,"page")
+            var type=GetParam(url,"type")
+            window.location.href = "/modifyProduct?id=" + id + "&page=" + page + "&type=" + type;
+        }
+        //获取url中的参数
+        function GetParam(url, id) {
+            url = url+ "";
+            regstr = "/(\\?|\\&)" + id + "=([^\\&]+)/";
+            reg = eval(regstr);
+            //eval可以将 regstr字符串转换为 正则表达式
+            result = url.match(reg);
+            if (result && result[2]) {
+                return result[2];
+            }
+        }
+
+        function deleteGoods(id) {
+            var params = {};
+            params.id = id;
+            $.ajax({
+                url:'/deleteGoods',
+                type:'post',
+                data: params,
+                dataType:'json',
+                success:function (result) {
+                    if (result.state==1){
+                        alert("删除成功");
+                        $('#' + id).parents(".product").remove();
+                    }
+                },
+                error:function () {
+                    alert("您的网络异常");
+                }
+            });
+        }
+
+
+        
+
+    </script>
+    </body>
+</html>

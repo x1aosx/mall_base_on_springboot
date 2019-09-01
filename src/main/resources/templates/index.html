@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>饰品商城</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Sublime project">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/bootstrap4/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/plugins/OwlCarousel2-2.2.1/animate.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/main_styles.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/responsive.css">
+        <!--bootstrap样式-->
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap/bootstrap-theme.css">
+    </head>
+    <body>
+        <div class="super_container">
+            <!-- Header -->
+            <header th:replace="userCommon::Header"></header>
+            <!-- Home -->
+            <div class="home">
+                <div class="home_slider_container">
+                    <!-- Home Slider -->
+                    <div class="owl-carousel owl-theme home_slider">
+                        <!-- Slider Item -->
+                        <div class="owl-item home_slider_item">
+                            <div class="home_slider_background"
+                                 style="background-image:url(/static/home/images/home_slider_1.png)"></div>
+                            <div class="home_slider_content_container">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="home_slider_content" data-animation-in="fadeIn"
+                                                 data-animation-out="animate-out fadeOut">
+                                                <div class="home_slider_title">玩csgo上faceit平台</div>
+                                                <div class="home_slider_subtitle">与各路大神一决高下</div>
+                                                <div class="button button_light home_button"><a href="#">去faceit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slider Item -->
+                        <div class="owl-item home_slider_item">
+                            <div class="home_slider_background"
+                                 style="background-image:url(/static/home/images/home_slider_2.png)"></div>
+                            <div class="home_slider_content_container">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="home_slider_content" data-animation-in="fadeIn"
+                                                 data-animation-out="animate-out fadeOut">
+                                                <div class="home_slider_title">最热门csgo饰品</div>
+                                                <div class="home_slider_subtitle">好货推荐跟着买就对了</div>
+                                                <div class="button button_light home_button"><a href="#">去看看</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slider Item -->
+                        <div class="owl-item home_slider_item">
+                            <div class="home_slider_background"
+                                 style="background-image:url(/static/home/images/home_slider_3.png)"></div>
+                            <div class="home_slider_content_container">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="home_slider_content" data-animation-in="fadeIn"
+                                                 data-animation-out="animate-out fadeOut">
+                                                <div class="home_slider_title">交易防骗指南</div>
+                                                <div class="home_slider_subtitle">务必阅读</div>
+                                                <div class="button button_light home_button"><a href="#">点击查看交易须知</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Home Slider Dots -->
+
+                    <div class="home_slider_dots_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="home_slider_dots">
+                                        <ul id="home_slider_custom_dots" class="home_slider_custom_dots">
+                                            <li class="home_slider_custom_dot active">01.</li>
+                                            <li class="home_slider_custom_dot">02.</li>
+                                            <li class="home_slider_custom_dot">03.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Ads -->
+
+            <!-- Products -->
+
+            <div class="products">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="product_grid">
+
+                                <!-- Product -->
+
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_1.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_6"><a href="#">传说</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=1">折叠刀（★） | 多普勒</a></div>
+                                        <div class="product_price">$226</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_2.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_6"><a href="#">传说</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=2">鲍伊猎刀（★） | 渐变大理石</a></div>
+                                        <div class="product_price">$211</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_3.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_5"><a href="#">隐秘</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=3">AK-47 | 血腥运动</a></div>
+                                        <div class="product_price">$65</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_4.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_5"><a href="#">隐秘</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=4">AK-47 | 二西莫夫</a></div>
+                                        <div class="product_price">$70</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_5.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_5"><a href="#">隐秘</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=6">AK-47 | 水栽竹</a></div>
+                                        <div class="product_price">$120</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_6.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_5"><a href="#">隐秘</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=7">沙漠之鹰 | 红色代号</a></div>
+                                        <div class="product_price">$85</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_7.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_5"><a href="#">隐秘</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=8">沙漠之鹰 | 炽烈之炎</a></div>
+                                        <div class="product_price">$150</div>
+                                    </div>
+                                </div>
+
+                                <!-- Product -->
+                                <div class="product">
+                                    <div class="product_image"><img src="/static/images/product/product_8.png" alt="">
+                                    </div>
+                                    <div class="product_extra product_level_5"><a href="#">隐秘</a></div>
+                                    <div class="product_content">
+                                        <div class="product_title"><a href="showGoodsToUser?id=5">M4A4 | 黑色魅影</a></div>
+                                        <div class="product_price">$68</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad -->
+
+            <div th:replace="userCommon::Ads"></div>
+            <!-- Icon Boxes -->
+            <div th:replace="userCommon::IconBoxes"></div>
+
+            <!-- Newsletter -->
+
+            <div th:replace="userCommon::Newsletter"></div>
+
+            <!-- Footer -->
+
+            <div class="footer_overlay"></div>
+            <footer th:replace="userCommon::Footer"></footer>
+        </div>
+
+        <script src="/static/home/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/home/styles/bootstrap4/popper.js"></script>
+        <script src="/static/home/styles/bootstrap4/bootstrap.min.js"></script>
+        <script src="/static/home/plugins/greensock/TweenMax.min.js"></script>
+        <script src="/static/home/plugins/greensock/TimelineMax.min.js"></script>
+        <script src="/static/home/plugins/scrollmagic/ScrollMagic.min.js"></script>
+        <script src="/static/home/plugins/greensock/animation.gsap.min.js"></script>
+        <script src="/static/home/plugins/greensock/ScrollToPlugin.min.js"></script>
+        <script src="/static/home/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+        <script src="/static/home/plugins/Isotope/isotope.pkgd.min.js"></script>
+        <script src="/static/home/plugins/easing/easing.js"></script>
+        <script src="/static/home/plugins/parallax-js-master/parallax.min.js"></script>
+        <script src="/static/home/js/custom.js"></script>
+        <script type="text/javascript" th:replace="userCommon::categoties"></script>
+    </body>
+</html>

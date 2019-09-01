@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <title>common</title>
+    </head>
+    <body>
+        <div id="wrapper">
+
+            <!--管理员页面头部-->
+            <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0"
+                 th:fragment="admin_top">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">饰品商城管理员</a>
+                </div>
+
+                <div class="header-right">
+<!--                    <a style="cursor: pointer" title="Logout"><i class="fa fa-exclamation-circle fa-2x"></i> 注销</a>-->
+                </div>
+            </nav>
+            <nav class="navbar-default navbar-side" role="navigation" th:fragment="admin_left">
+                <div class="sidebar-collapse" >
+                    <ul class="nav" id="main-menu">
+                        <li>
+                            <div class="user-img-div">
+                                <img src="/static/images/admin/user.png " class="img-thumbnail"/>
+                                <div class="inner-text">
+<!--                                    <h5 th:text="${session.loggedAdmin.username}"></h5>-->
+                                </div>
+                            </div>
+
+                        </li>
+                        <li>
+                            <a th:href="@{/adminHome}"><i class="fa fa-dashboard "></i>主页</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-desktop "></i>饰品种类<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level" id="categories">
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-yelp "></i>用户管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/getAccountByStatus?status=1&page=1"><i class="fa fa-coffee"></i>会员用户</a>
+                                </li>
+                                <li>
+                                    <a href="/getAccountByStatus?status=2&page=1"><i class="fa fa-flash "></i>锁定用户</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bicycle "></i>订单信息<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a href="/showAllTickers"><i class="fa fa-desktop "></i>查看订单</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-code "></i>搜索订单</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap "></i>积分 <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/showPointsByType?page=1&type=1"><i class="fa fa-bicycle "></i>积分获取明细</a>
+                                </li>
+                                <li>
+                                    <a href="/showPointsByType?page=1&type=2"><i class="fa fa-flask "></i>积分使用明细</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a th:href="@{/addProduct}"><i class="fa fa-edit "></i>添加商品</a>
+                        </li>
+                        <li>
+                            <a href="/adminLogout"><i class="fa fa-sign-in "></i>注销</a>
+                        </li>
+
+
+                        <li>
+                            <a class="active-menu" href="#"><i class="fa fa-square-o "></i>Blank Page</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div id="footer-sec" th:fragment="admin_bottom">
+                饰品商城后台管理中心<a href="/home" target="_blank" title="饰品商城">前往商城</a>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" th:fragment="modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body" >
+                        <div class="alert alert-primary">
+                            <a href="#" class="alert-primary" id="message"></a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="close-btn">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" th:fragment="categories">
+        (function ($) {
+            var categories;
+            $.ajax({
+                url: "/getActivatedType",
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    categories = result.data.types;
+                    for (var i = 0; i < categories.length; i++) {
+                        var li = inertGoods(categories[i].id, "  " + categories[i].name)
+                        $("#categories").append(li);
+                    }
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+        })(jQuery);
+
+        function inertGoods(type, name) {
+            var html = '<li><a href="/showGoodsByTypeToAdmin?page=1&type=' + type + '" <i class="fa fa-bug"></i>' + name + '</a></li>';
+            return html;
+        }
+    </script>
+</html>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucky.mall.mapper.AccountMapper">
+    <!-- 可根据自己的需求，是否要使用 -->
+    <select id="selectAccount" parameterType="java.lang.String" resultType="Account">
+        select * from account
+        where username = #{username}
+    </select>
+
+    <select id="selectAccountByEmail" parameterType="java.lang.String" resultType="Account">
+        select * from account
+        where email = #{email}
+    </select>
+
+    <insert id="insertAccount" parameterType="Account" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into account(id,username, password, email,status)
+        value (#{id},#{username},#{password},#{email},#{status})
+    </insert>
+
+    <select id="selectAccountById" parameterType="java.lang.Integer" resultType="Account">
+        select * from account
+        where id = #{id}
+    </select>
+
+    <select id="selectUsername" parameterType="java.lang.String"  resultType="java.lang.String">
+        select username from account
+        where username = #{username}
+    </select>
+    <!--通过邮箱查找用户-->
+    <select id="selectEmail" parameterType="java.lang.String" resultType="java.lang.String">
+        select email from account
+        where email = #{email}
+    </select>
+    <!--根据不同的状态获取用户-->
+    <select id="selectAccountByStatus" parameterType="int" resultType="Account">
+        select  id,username,email,points,nickName
+        from account
+        where status = #{status}
+    </select>
+    <!--获得所有的用户-->
+    <select id="selectAllAccount" resultType="Account">
+        select id, username,email,points,nickName
+        from account
+    </select>
+    <!--修改用户状态-->
+    <update id="updateStatus" parameterType="int">
+        update account
+        set status = #{status}
+        where  id=#{id}
+    </update>
+    <!--更新用户基本信息-->
+    <update id="updateAccount" parameterType="Account">
+        update account
+        <set>
+            <if test="nickName!=null">nickName = #{nickName}</if>,
+            <if test="email!=null">email=#{email}</if>,
+            <if test="image!=null">image=#{image}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updatePassword" parameterType="Account">
+        update account
+        <set>
+            <if test="password!=null">password=#{password}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectAll" resultType="Account">
+        select *
+        from account
+    </select>
+
+    <select id="selectPointsById" parameterType="int" resultType="int">
+        select points
+        from account
+        where id =#{id}
+    </select>
+
+    <update id="updatePointsById" parameterType="int" >
+        update account
+        <set>
+            <if test="points!=null">points=#{points}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectCount" parameterType="int" resultType="int">
+       SELECT COUNT(*) FROM account
+    </select>
+</mapper>

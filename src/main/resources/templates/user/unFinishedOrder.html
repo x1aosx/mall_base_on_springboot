@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>饰品商城</title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="description" content="Sublime project"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/bootstrap4/bootstrap.min.css"/>
+        <link href="/static/home/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/contact.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/contact_responsive.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap/bootstrap-theme.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/checkout.css">
+        <link rel="stylesheet" type="text/css" href="/static/home/styles/checkout_responsive.css">
+    </head>
+    <body>
+        <div class="super_container">
+            <!-- Header -->
+            <header th:replace="userCommon::Header"></header>
+            <!-- Home -->
+            <div class="home">
+                <div class="home_container">
+                    <div class="home_background" style="background-image:url(/static/home/images/contact.jpg)"></div>
+                    <div class="home_content_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="home_content">
+                                        <div class="breadcrumbs">
+                                            <ul>
+                                                <li><a th:href="@{/home}">主页</a></li>
+                                                <li>个人中心</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact">
+                <div class="container">
+                    <div class="row">
+                        <!-- Get in touch -->
+                        <div class="col-lg-8" >
+                            <div class="row">
+                                <div class="col-lg-6" th:each="ticker :${ tickerList}">
+                                    <div class="order checkout_section" style="margin-bottom: 20px">
+                                        <div class="section_title" th:text="${ticker.goodsName}"></div>
+                                        <div class="section_subtitle" th:text="${ticker.id}"></div>
+                                        <!-- Order details -->
+                                        <div class="order_list_container">
+                                            <ul class="order_list">
+                                                <li class="d-flex flex-row align-items-center justify-content-start" style="margin-bottom: 20px">
+                                                    <div class="order_list_title">价格</div>
+                                                    <div class="order_list_value ml-auto" th:text="${ticker.price}"></div>
+                                                </li>
+                                                <li class="d-flex flex-row align-items-center justify-content-start" style="margin-bottom: 20px">
+                                                    <div class="order_list_title">数量</div>
+                                                    <div class="order_list_value ml-auto" th:text="${ticker.number}"></div>
+                                                </li>
+                                                <li class="d-flex flex-row align-items-center justify-content-start" style="margin-bottom: 20px">
+                                                    <div class="order_list_title">积分</div>
+                                                    <div class="order_list_value ml-auto" th:text="${ticker.points}"></div>
+                                                </li>
+                                                <li class="d-flex flex-row align-items-center justify-content-start" >
+                                                    <div class="order_list_title">下单时间</div>
+                                                    <div class="order_list_value ml-auto" th:text="${#dates.format(ticker.createTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                                                </li>
+                                                <li class="d-flex flex-row align-items-center justify-content-start" style="margin-bottom: 20px">
+                                                    <div class="button order_button cancelTicker" style="margin-top: 15px;margin-right: 20px"><a href="#">取消</a></div>
+                                                    <div class="button order_button payTicker" style="margin-top: 15px"><a href="#">付款</a></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+<!--                                <div class="button order_button" style="margin-top: 20px"><a href="#">支付所选订单</a></div>-->
+                            </div>
+                        </div>
+                        <!-- Contact Info -->
+                        <div class="col-lg-1 offset-xl-1 contact_col" th:replace="centerCommon::centerRight"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Ad -->
+            <!-- Footer -->
+            <div class="footer_overlay"></div>
+            <footer th:replace="userCommon::Footer"></footer>
+        </div>
+<!--        <script src="/static/home/js/jquery-3.2.1.min.js"></script>-->
+        <script src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+        <script src="/static/home/styles/bootstrap4/popper.js"></script>
+        <script src="/static/home/styles/bootstrap4/bootstrap.min.js"></script>
+<!--        <script src="/static/js/bootstrap/bootstrap.js"></script>-->
+        <script src="/static/home/plugins/greensock/TweenMax.min.js"></script>
+        <script src="/static/home/plugins/greensock/TimelineMax.min.js"></script>
+        <script src="/static/home/plugins/scrollmagic/ScrollMagic.min.js"></script>
+        <script src="/static/home/plugins/greensock/animation.gsap.min.js"></script>
+        <script src="/static/home/plugins/greensock/ScrollToPlugin.min.js"></script>
+        <script src="/static/home/plugins/easing/easing.js"></script>
+        <script src="/static/home/js/contact.js"></script>
+        <script type="text/javascript" th:replace="userCommon::categoties"></script>
+        <script type="text/javascript">
+            $(function () {
+                <!--取消订单-->
+                $(".cancelTicker").click(function () {
+                    var tickerId = $(this).parents(".order").find(".section_subtitle").text();
+                    $(this).parents(".order").remove();
+                    var params = {};
+                    params.tickerId = tickerId;
+                    $.ajax({
+                        url:'/deleteUnFinishTicker',
+                        type:'post',
+                        data:params,
+                        dataType:'json',
+                        success:function (result) {
+
+                        },
+                        error:function () {
+                            alert("您的网络异常");
+                        }
+                    });
+                });
+                <!--支付订单-->
+                $(".payTicker").click(function () {
+                    var tickerId = $(this).parents(".order").find(".section_subtitle").text();
+                    $(this).parents(".order").remove();
+                    console.log(tickerId);
+                    var params = {};
+                    params.tickersIdStr = tickerId;
+                    $.ajax({
+                        url:'/payment',
+                        type:'post',
+                        data:params,
+                        dataType:'json',
+                        success:function (result) {
+                            alert("支付成功");
+                        },
+                        error:function () {
+                            alert("您的网络异常");
+                        }
+                    });
+
+                });
+
+            });
+        </script>
+    </body>
+</html>

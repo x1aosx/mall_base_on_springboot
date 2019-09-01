@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="zh">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>饰品商城管理</title>
+
+        <!-- BOOTSTRAP STYLES-->
+        <link href="/static/css/admin/bootstrap.css" rel="stylesheet"/>
+        <!-- FONTAWESOME STYLES-->
+        <link href="/static/css/admin/font-awesome.css" rel="stylesheet"/>
+        <!--CUSTOM BASIC STYLES-->
+        <link href="/static/css/admin/basic.css" rel="stylesheet"/>
+        <!--CUSTOM MAIN STYLES-->
+        <link href="/static/css/admin/custom.css" rel="stylesheet"/>
+        <!-- GOOGLE FONTS-->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav th:replace="adminCommon::admin_top"></nav>
+            <!-- /. NAV TOP  -->
+            <nav class="navbar-default navbar-side" role="navigation" th:replace="adminCommon::admin_left"></nav>
+            <div id="page-wrapper">
+                <div id="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="page-head-line">用户信息</h1>
+                            <h1 class="page-subhead-line">请勿泄露用户隐私</h1>
+                        </div>
+                    </div>
+
+                    <div>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="success text-center">#</th>
+                                <th class="success text-center">用户名</th>
+                                <th class="success text-center">邮箱</th>
+                                <th class="success text-center">积分</th>
+                                <th class="success text-center">昵称</th>
+                                <th class="success text-center">操作</th>
+                                <th class="success text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody th:each="account:${pageInfo.list}">
+                            <tr>
+                                <td class="text-center" th:text="${accountStat.count}">1</td>
+                                <td class="text-center" th:text="${account.username}">xiaosx</td>
+                                <td class="text-center" th:text="${account.email}">xsx1075312923@163.com</td>
+                                <td class="text-center" th:text="${account.points}">3000</td>
+                                <td class="text-center" th:text="${account.nickName}">xsx1075312923@163.com</td>
+                                <td class="text-center" th:if="${#httpServletRequest.getParameter('status')}==1">
+                                    <button type="button" class="btn btn-warning" th:id="${account.id}"
+                                            onclick="changeStatus(id,2)">锁定用户
+                                    </button>
+                                </td>
+                                <td class="text-center" th:if="${#httpServletRequest.getParameter('status')}==2">
+                                    <button type="button" class="btn btn-success" th:id="${account.id}"
+                                            onclick="changeStatus(id,1)">激活用户
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger" th:id="${account.id}"
+                                            onclick="needDeleteId(this.id)" data-toggle="modal" data-target="#myModal">
+                                        删除用户
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <ul class="pagination">
+                    <li><a href="#">&laquo;</a></li>
+
+<!--                    <li><a th:href="@{'/getAccountByStatus?status=' + ${#httpServletRequest.getParameter('status')} +'&page=' + ${i}}"  th:each="i :${#numbers.sequence(pageInfo.navigateFirstPage,pageInfo.navigateLastPage)}" th:text="  ${i}"   th:class="${pageInfo.pageNum == i}? 'page-item active' :' page-item' "></a></li>-->
+                    <li><a th:href="@{/getAccountByStatus(status=${param.status},page=${i})}"  th:each="i :${#numbers.sequence(pageInfo.navigateFirstPage,pageInfo.navigateLastPage)}" th:text="  ${i}"   th:class="${pageInfo.pageNum == i}? 'page-item active' :' page-item' "></a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+
+                <!-- /. PAGE INNER  -->
+            </div>
+            <!--        &lt;!&ndash; /. NAV SIDE  &ndash;&gt;-->
+            <div th:replace="adminCommon::admin_bottom"></div>
+            <!-- /. PAGE WRAPPER  -->
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            <a href="#" class="alert-link">是否确认删除此用户</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteAccount()">确认删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /. WRAPPER  -->
+
+        <!-- /. FOOTER  -->
+        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+        <!-- JQUERY SCRIPTS -->
+        <script src="/static/js/admin/jquery-1.10.2.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="/static/js/admin/bootstrap.js"></script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="/static/js/admin/jquery.metisMenu.js"></script>
+        <!-- CUSTOM SCRIPTS -->
+        <script src="/static/js/admin/custom.js"></script>
+        <!--饰品种类-->
+        <script type="text/javascript" th:replace="adminCommon::categories"></script>
+        <!--改变状态-->
+        <script type="text/javascript">
+            function changeStatus(id, status) {
+                var params = {};
+                params.id = id;
+                params.status = status;
+                $.ajax({
+                    url: "/changeStatus",
+                    data: params,
+                    dataType: "json",
+                    type: "post",
+                    success: function (result) {
+                        if (result.state == 1) {
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            }
+
+            <!--删除用户-->
+            var needDeleteAccountId;//需要删除的用户id
+            function needDeleteId(id) {
+                needDeleteAccountId = id;
+            }
+
+            //执行删除
+            function deleteAccount() {
+                changeStatus(needDeleteAccountId, 3);
+            }
+        </script>
+    </body>
+</html>

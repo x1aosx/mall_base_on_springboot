@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <title>饰品商城</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sublime project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/static/home/styles/bootstrap4/bootstrap.min.css">
+    <link href="/static/home/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/static/home/styles/contact.css">
+    <link rel="stylesheet" type="text/css" href="/static/home/styles/contact_responsive.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap/bootstrap-theme.css">
+
+    </head>
+    <body>
+    <div class="super_container">
+        <!-- Header -->
+        <header th:replace="userCommon::Header"></header>
+        <!-- Home -->
+        <div class="home" th:fragment="centerTop">
+            <div class="home_container">
+                <div class="home_background" style="background-image:url(/static/home/images/contact.jpg)"></div>
+                <div class="home_content_container">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="home_content">
+                                    <div class="breadcrumbs">
+                                        <ul>
+                                            <li><a th:href="@{/home}">主页</a></li>
+                                            <li>个人中心</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contact">
+            <div class="container">
+                <div class="row">
+                    <!-- Get in touch -->
+                    <!-- Contact Info -->
+                    <div class="col-lg-3 offset-xl-1 contact_col" th:fragment="centerRight">
+                        <div class="contact_info">
+                            <div class="contact_info_section">
+                                <div class="contact_info_title">个人资料</div>
+                                <ul>
+                                    <li><a th:href="@{/personCenter}">个人信息</a></li>
+                                    <li><a  th:href="@{/changePassword}">修改密码</a></span></li>
+                                </ul>
+                            </div>
+                            <div class="contact_info_section">
+                                <div class="contact_info_title">我的交易</div>
+                                <ul>
+                                    <li><a href="/payment">待支付订单</a></li>
+                                    <li><a href="/unFinishedTickers">未完成订单</a></li>
+                                    <li><a href="/finishedTickers?status=1">待评价订单</a></li>
+                                    <li><a href="/finishedTickers?status=2">已评价评价</a></li>
+                                </ul>
+                            </div>
+                            <div class="contact_info_section">
+                                <div class="contact_info_title">我的资产</div>
+                                <ul>
+                                    <li><a href="/showPointsByAccountId">我的积分</a></li>
+                                    <li><a href="/finishedTickers?status=3">抽奖所得</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ad -->
+        <!-- Footer -->
+        <div class="footer_overlay"></div>
+        <footer th:replace="userCommon::Footer"></footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Message</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-primary">
+                        <a href="#" class="alert-primary" id="message"></a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--        <script src="/static/home/js/jquery-3.2.1.min.js"></script>-->
+    <script src="/static/js/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="/static/home/styles/bootstrap4/popper.js"></script>
+    <script src="/static/home/styles/bootstrap4/bootstrap.min.js"></script>
+    <!--        <script src="/static/js/bootstrap/bootstrap.js"></script>-->
+    <script src="/static/home/plugins/greensock/TweenMax.min.js"></script>
+    <script src="/static/home/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="/static/home/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="/static/home/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="/static/home/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="/static/home/plugins/easing/easing.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
+    <script src="/static/home/js/contact.js"></script>
+    <script type="text/javascript" th:replace="userCommon::categoties"></script>
+    <script type="text/javascript">
+        <!--选择图片-->
+        function readyUpload() {
+            $("#selectFile").click();
+        }
+
+        $(function () {
+            $("#selectFile").change(function () {
+                var $file = $(this);
+                var objUrl = $file[0].files[0];
+                //获得一个http格式的url路径:mozilla(firefox)||webkit or chrome
+                var windowURL = window.URL || window.webkitURL;
+                //createObjectURL创建一个指向该参数对象(图片)的URL
+                var dataURL = windowURL.createObjectURL(objUrl);
+                $("#accountImage").attr("src", dataURL);
+            });
+        });
+
+        function saveChange() {
+            var formData = new FormData();
+            formData.append('nickName', $("#nickName").val());
+            formData.append('email', $("#email").val());
+            formData.append('imageFile', $('#selectFile')[0].files[0]);
+
+            console.log(formData);
+            $.ajax({
+                type: 'post',
+                contentType: false,
+                processData: false,
+                url: '/saveChange',
+                data: formData,
+                success: function (result) {
+                    if (result.state == 1) {
+                        console.log("success");
+                        $("#message").html(result.data);
+                        $("#showError").click();
+                    } else {
+                        $("#message").html(result.msg);
+                        $("#message").removeClass("alert-primary");
+                        $("#message").addClass("alert-danger")
+                        $("#showError").click();
+                    }
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+        }
+
+        // data: $("#account").serialize(),
+    </script>
+    </body>
+</html>

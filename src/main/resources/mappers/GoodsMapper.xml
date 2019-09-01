@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucky.mall.mapper.GoodsMapper">
+    <select id="selectByType" parameterType="java.lang.Integer" resultType="Goods">
+        select id,name,price,image,level
+        from goods
+        where type=#{type} and status = #{status}
+    </select>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultType="Goods">
+        select id,name ,price, type ,pointsNeed,discount,description,image,stock,status,level
+        from goods
+        where id = #{id}
+    </select>
+
+    <insert id="insertGoods" parameterType="Goods">
+        insert into goods(name,price,type,pointsNeed,discount,description,image,stock,status,level)
+        value (#{name},#{price},#{type},#{pointsNeed},#{discount},#{description},#{image},#{stock},#{status},#{level})
+    </insert>
+
+    <update id="updateGoods" parameterType="Goods">
+        update goods
+        <set>
+            <if test="name!=null">name=#{name}</if>,
+            <if test="price!=null">price =#{price}</if>,
+            <if test="pointsNeed!=null">pointsNeed=#{pointsNeed}</if>,
+            <if test="discount!=null">discount=#{discount}</if>,
+            <if test="description!=null">description=#{description}</if>,
+            <if test="image!=null">image=#{image}</if>,
+            <if test="stock!=null">stock=#{stock}</if>,
+            <if test="level!=null">level=#{level}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="selectImageById" parameterType="int" resultType="java.lang.String">
+        select image
+        from goods
+        where id=#{id}
+    </select>
+
+    <select id="selectPriceAndDiscountById" parameterType="int" resultType="Goods">
+        select price,discount
+        from goods
+        where id = #{id}
+    </select>
+
+    <select id="randomGoods" parameterType="int" resultType="Goods">
+        select id,name ,price, type ,pointsNeed,discount,description,image,stock,status,level
+        from goods
+        order by RAND() limit #{randNum}
+    </select>
+
+    <select id="selectStock" parameterType="int" resultType="int">
+        select stock
+        from goods
+        where id = #{id}
+    </select>
+
+    <update id="updateStock" parameterType="int">
+        update goods
+        <set>
+            <if test="stock!=null">stock=#{stock}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="int">
+        update goods
+        <set>
+            <if test="status!=null">status = #{status}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="randomGoodsByLevel" parameterType="int" resultType="Goods">
+        select id,name ,price, type ,pointsNeed,discount,description,image,stock,status,level
+        from goods
+        where level = #{level}
+        order by RAND() limit #{randNum}
+    </select>
+
+    <select id="selectGoodsEvaluationByGoodsId" parameterType="int" resultType="UserComment">
+        select nickName,evaluation,createTime
+        from account,goods,ticker
+        where account.id = ticker.accountId and goods.id = ticker.goodsId and ticker.status = 2 and goods.id = #{id}
+    </select>
+
+    <select id="selectGoodsByNameByLIke" parameterType="java.lang.String" resultType="Goods">
+        select id,name,price,image,level
+        from goods
+        where name like '%${goodsName}%'
+    </select>
+
+    <select id="selectCount" parameterType="int" resultType="int">
+       SELECT COUNT(*) FROM goods
+    </select>
+</mapper>
